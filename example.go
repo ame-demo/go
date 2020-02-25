@@ -11,6 +11,11 @@ import (
 )
 
 func main()  {
+	// 必要步骤：
+	// 实例化一个认证对象，入参需要传入腾讯云账户密钥对secretId，secretKey。
+	// 这里采用的是从环境变量读取的方式，需要在环境变量中先设置这两个值。
+	// 你也可以直接在代码中写死密钥对，但是小心不要将代码复制、上传或者分享给他人，
+	// 以免泄露密钥对危及你的财产安全。
 	credential := common.NewCredential(
 		"",
 		"",
@@ -19,13 +24,12 @@ func main()  {
 	cpf := profile.NewClientProfile()
 	cpf.HttpProfile.ReqMethod = "POST"
 	cpf.HttpProfile.ReqTimeout = 5
-	//cpf.HttpProfile.Endpoint = "cvm.ap-guangzhou.tencentcloudapi.com"
 	cpf.SignMethod = "HmacSHA1"
 
 	client, _ := ame.NewClient(credential, "ap-guangzhou", cpf)
 	// 获取分类
 	request := ame.NewDescribeStationsRequest()
-	request.Limit = common.Uint64Ptr(10)
+	request.Limit = common.Uint64Ptr(30)
 	request.Offset = common.Uint64Ptr(0)
 
 	// get response structure
@@ -44,28 +48,40 @@ func main()  {
 	fmt.Printf("%s\n", b)
 
 	// 获取分类音乐列表
-	request1 := ame.NewDescribeItemsRequest()
-	request1.Limit = common.Uint64Ptr(10)
-	request1.Offset = common.Uint64Ptr(0)
-	request1.CategoryId = response.Response.Stations[0].CategoryID
-	response1, err := client.DescribeItems(request1)
-	b, _ = json.Marshal(response1.Response)
+	itemReq := ame.NewDescribeItemsRequest()
+	itemReq.Limit = common.Uint64Ptr(10)
+	// Offset计算方法：Offset = Offset + Limit
+	itemReq.Offset = common.Uint64Ptr(0)
+	// 这里只是例子，取其中一个CategoryID
+	itemReq.CategoryId = response.Response.Stations[0].CategoryID
+	itemRsp, err := client.DescribeItems(itemReq)
+	if err != nil {
+		panic(err)
+	}
+	b, _ = json.Marshal(itemRsp.Response)
 	fmt.Printf("%s\n", b)
 
 	// 获取歌曲信息
-	request2 := ame.NewDescribeMusicRequest()
-	request2.ItemId = response1.Response.Items[0].ItemID
+	musicReq := ame.NewDescribeMusicRequest()
+	// 这里只是例子，取其中一个ItemID
+	musicReq.ItemId = itemRsp.Response.Items[0].ItemID
 	// 请使用C端用户唯一标识
-	request2.IdentityId = common.StringPtr("1234")
-	request2.SubItemType = common.StringPtr("MP3-128K-FTD")
-	response2, err := client.DescribeMusic(request2)
-	b, _ = json.Marshal(response2.Response)
-	fmt.Printf("%s\n", b)
+	userId := "xcd323dasd1"
+	musicReq.IdentityId = common.StringPtr(userId)
+	musicRsp, err := client.DescribeMusic(musicReq)
+	if err != nil {
+		panic(err)
+	}
+	// 获取音乐播放路径，前提是您已经在腾讯云AME控制台添加过域名
+	println(*musicRsp.Response.Music.FullUrl)
 
 	// 获取歌词信息
-	request3 := ame.NewDescribeLyricRequest()
-	request3.ItemId = response1.Response.Items[0].ItemID
-	response3, err := client.DescribeLyric(request3)
-	b, _ = json.Marshal(response3.Response)
+	lyricReq := ame.NewDescribeLyricRequest()
+	lyricReq.ItemId = itemRsp.Response.Items[0].ItemID
+	lyricRsp, err := client.DescribeLyric(lyricReq)
+	if err != nil {
+		panic(err)
+	}
+	b, _ = json.Marshal(lyricRsp.Response)
 	fmt.Printf("%s\n", b)
 }
