@@ -1,4 +1,8 @@
+github.com/tencentcloud/tencentcloud-sdk-go v1.0.81 h1:ORB5IJ6lMW7nd1S5jCjfMs13kdlYP8Du4vQ9pB9ZmJY=
+github.com/tencentcloud/tencentcloud-sdk-go v1.0.81/go.mod h1:asUz5BPXxgoPGaRgZaVm1iGcUAuHyYUo1nXqKa83cvI=
 github.com/tencentcloud/tencentcloud-sdk-go v3.0.114+incompatible h1:7S2LASPs7xCFBmlqHi6zSBTnIG5mlVlGUBjZTgxFTl8=
 github.com/tencentcloud/tencentcloud-sdk-go v3.0.114+incompatible/go.mod h1:0PfYow01SHPMhKY31xa+EFz2RStxIqj6JFAJS+IkCi4=
 github.com/tencentcloud/tencentcloud-sdk-go v3.0.123+incompatible h1:zLGC81uhgdWCQKIjP25BvmcX1PL72sB2xrpVBIpwjfM=
 github.com/tencentcloud/tencentcloud-sdk-go v3.0.123+incompatible/go.mod h1:0PfYow01SHPMhKY31xa+EFz2RStxIqj6JFAJS+IkCi4=
+github.com/tencentcloud/tencentcloud-sdk-go v3.0.233+incompatible h1:q+D/Y9jla3afgsIihtyhwyl0c2W+eRWNM9ohVwPiiPw=
+github.com/tencentcloud/tencentcloud-sdk-go v3.0.233+incompatible/go.mod h1:0PfYow01SHPMhKY31xa+EFz2RStxIqj6JFAJS+IkCi4=
